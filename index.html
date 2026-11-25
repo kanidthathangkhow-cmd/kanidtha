@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P'Time♡</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600&family=Sarabun:wght@300;400;500&display=swap');
+
+    :root {
+      --cream: #F5F0E6;
+      --cream-light: #FBF8F1;
+      --navy: #172F55;
+      --blue: #7892B5;
+      --pale-blue: #DCE5EF;
+      --line: #C5D0DC;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--cream);
+      color: var(--navy);
+      font-family: 'Sarabun', sans-serif;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      width: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 35px 20px;
+      position: relative;
+    }
+
+    .page.active {
+      display: flex;
+      animation: pageIn .8s ease both;
+    }
+
+    .page.leaving {
+      display: flex;
+      animation: pageOut .7s ease both;
+      pointer-events: none;
+    }
+
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pageOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .page-inner {
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+      position: relative;
+    }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--blue);
+      margin-bottom: 15px;
+    }
+
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+    }
+
+    .main-title {
+      font-size: clamp(30px, 6vw, 48px);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--blue);
+      letter-spacing: 1px;
+    }
+
+    .decoration {
+      color: var(--blue);
+      font-size: 20px;
+      margin: 18px 0;
+      letter-spacing: 10px;
+    }
+
+    /* PAGE 1 - VINYL PLAYER */
+
+    .player-page {
+      background:
+        radial-gradient(circle at 20% 20%, #DCE5EF55 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 75%, #7892B522 0 2px, transparent 3px),
+        var(--cream);
+    }
+
+    .player {
+      width: min(100%, 420px);
+      margin: 35px auto 25px;
+      padding: 28px 25px 25px;
+      background: var(--cream-light);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      box-shadow: 8px 9px 0 #172F5510;
+      position: relative;
+    }
+
+    .player-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      margin-bottom: 25px;
+      color: var(--blue);
+    }
+
+    .turntable {
+      width: 260px;
+      height: 260px;
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .record {
+      width: 235px;
+      height: 235px;
+      border-radius: 50%;
+      background:
+        repeating-radial-gradient(
+          circle,
+          #172F55 0px,
+          #172F55 2px,
+          #243F68 3px,
+          #172F55 4px,
+          #172F55 6px
+        );
+      border: 7px solid #102544;
+      box-shadow: 0 4px 10px #172F5530;
+      position: relative;
+      animation: spin 3s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .record.spinning {
+      animation-play-state: running;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .record::before {
+      content: "";
+      position: absolute;
+      inset: 13px;
+      border-radius: 50%;
+      border: 1px solid #7892B566;
+    }
+
+    .record-label {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 2px solid var(--blue);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      z-index: 2;
+    }
+
+    .record-label span:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+    }
+
+    .record-label span:last-child {
+      font-family: 'DM Mono', monospace;
+      font-size: 7px;
+      letter-spacing: 1px;
+    }
+
+    .record-hole {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--navy);
+      position: absolute;
+      z-index: 3;
+    }
+
+    .tonearm {
+      position: absolute;
+      width: 115px;
+      height: 8px;
+      background: var(--blue);
+      border: 1px solid var(--navy);
+      border-radius: 10px;
+      top: 35px;
+      right: -5px;
+      transform-origin: 95% 50%;
+      transform: rotate(-35deg);
+      transition: transform 1.3s ease;
+      z-index: 5;
+    }
+
+    .tonearm::before {
+      content: "";
+      width: 22px;
+      height: 22px;
+      border: 4px solid var(--navy);
+      border-radius: 50%;
+      background: var(--cream);
+      position: absolute;
+      right: -8px;
+      top: -8px;
+    }
+
+    .tonearm::after {
+      content: "";
+      width: 20px;
+      height: 12px;
+      background: var(--navy);
+      border-radius: 2px;
+      position: absolute;
+      left: -5px;
+      top: -2px;
+    }
+
+    .tonearm.playing {
+      transform: rotate(8deg);
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 28px;
+      gap: 12px;
+    }
+
+    .play-button {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 1px solid var(--navy);
+      background: var(--navy);
+      color: var(--cream);
+      font-size: 13px;
+      letter-spacing: 1px;
+      transition: .3s;
+      box-shadow: 0 4px 0 #7892B555;
+    }
+
+    .play-button:hover {
+      background: var(--blue);
+      transform: translateY(-3px);
+    }
+
+    .play-button:disabled {
+      opacity: .75;
+      cursor: default;
+    }
+
+    .player-caption {
+      margin-top: 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--blue);
+    }
+
+    .small-note {
+      margin-top: 22px;
+      font-size: 12px;
+      color: var(--blue);
+    }
+
+    /* PAGE 2 - DAILY NOTE */
+
+    .note-page {
+      background: var(--cream);
+    }
+
+    .date-line {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--blue);
+      letter-spacing: 2px;
+      margin-top: 20px;
+    }
+
+    .daily-message {
+      max-width: 500px;
+      margin: 30px auto 35px;
+      padding: 28px 25px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-size: 16px;
+      line-height: 2;
+      font-weight: 300;
+    }
+
+    .section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--blue);
+      margin: 35px 0 18px;
+    }
+
+    /* การ์ดใบเดียว */
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .note-card {
+      width: 100%;
+      max-width: 320px;
+      min-height: 155px;
+      padding: 25px;
+      background: var(--cream-light);
+      border: 1px solid #B9C7D7;
+      color: var(--navy);
+      text-align: center;
+      position: relative;
+      transition: .3s ease;
+      box-shadow: 4px 5px 0 #172F5510;
+    }
+
+    .note-card::before {
+      content: "✧";
+      position: absolute;
+      top: 10px;
+      left: 13px;
+      color: var(--blue);
+    }
+
+    .note-card::after {
+      content: "✧";
+      position: absolute;
+      bottom: 10px;
+      right: 13px;
+      color: var(--blue);
+    }
+
+    .note-card:hover {
+      transform: translateY(-5px) rotate(-1deg);
+      box-shadow: 6px 8px 0 #172F5515;
+    }
+
+    .note-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--blue);
+      margin-bottom: 17px;
+    }
+
+    .note-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px;
+    }
+
+    .note-hint {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      color: var(--blue);
+    }
+
+    .back-button {
+      border: none;
+      background: transparent;
+      color: var(--blue);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-top: 35px;
+      padding: 10px;
+      transition: .2s;
+    }
+
+    .back-button:hover {
+      color: var(--navy);
+      transform: translateX(-3px);
+    }
+
+    /* POPUP */
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: #172F5570;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 20;
+    }
+
+    .popup.show {
+      display: flex;
+      animation: pageIn .3s ease both;
+    }
+
+    .popup-content {
+      width: min(100%, 420px);
+      background: var(--cream-light);
+      border: 1px solid var(--blue);
+      padding: 35px 28px;
+      text-align: center;
+      position: relative;
+      box-shadow: 8px 8px 0 #172F5520;
+    }
+
+    .popup-star {
+      font-size: 22px;
+      color: var(--blue);
+      margin-bottom: 15px;
+    }
+
+    .popup-content h2 {
+      font-size: 27px;
+      margin-bottom: 18px;
+    }
+
+    .popup-message {
+      font-size: 15px;
+      line-height: 2;
+      font-weight: 300;
+      white-space: pre-line;
+    }
+
+    .close-button {
+      margin-top: 25px;
+      padding: 10px 25px;
+      border: 1px solid var(--navy);
+      background: transparent;
+      color: var(--navy);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      transition: .2s;
+    }
+
+    .close-button:hover {
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .footer {
+      margin-top: 35px;
+      color: var(--blue);
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    @media (max-width: 480px) {
+      .player {
+        padding: 22px 15px;
+      }
+
+      .turntable {
+        width: 240px;
+        height: 240px;
+      }
+
+      .record {
+        width: 215px;
+        height: 215px;
+      }
+
+      .tonearm {
+        right: -8px;
+        top: 30px;
+      }
+
+      .daily-message {
+        font-size: 14px;
+        padding: 22px 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- เพลง: วาง my-song.mp3 ไว้ในโฟลเดอร์เดียวกับไฟล์นี้ -->
+  <audio id="backgroundMusic" src="เธอต้องมีฉันแล้วป่าว Only Me.mp3" preload="auto" loop></audio>
+
+  <!-- PAGE 1: VINYL PLAYER -->
+  <section class="page active player-page" id="page1">
+    <div class="page-inner">
+
+      <div class="eyebrow"></div>
+      <h1 class="main-title">A SMALL GIFT FOR YOU</h1>
+     
+      <div class="decoration">✧ ♡ ♪</div>
+
+      <div class="player">
+        
+        <div class="turntable">
+          <div class="record" id="record">
+            <div class="record-label">
+              <span>พี่ทาม</span>
+              <span>♡ 101 ♡</span>
+            </div>
+            <div class="record-hole"></div>
+          </div>
+
+          <div class="tonearm" id="tonearm"></div>
+        </div>
+
+        <div class="player-controls">
+          <button class="play-button" id="playButton">PLAY</button>
+        </div>
+
+        <div class="player-caption" id="playerCaption">
+        
+        </div>
+      </div>
+
+      <p class="small-note"></p>
+
+      <div class="footer"></div>
+    </div>
+  </section>
+
+
+  <!-- PAGE 2: DAILY ENCOURAGEMENT -->
+  <section class="page note-page" id="page2">
+    <div class="page-inner">
+
+     
+      <div class="date-line" id="todayDate"></div>
+
+      <div class="daily-message" id="dailyMessage">
+        Loading your little reminder...
+      </div>
+
+      <div class="section-title">ONE LITTLE NOTE, JUST FOR YOU</div>
+
+      <!-- การ์ดมีเพียงใบเดียว -->
+      <div class="cards">
+        <button class="note-card" id="openNote">
+          <div class="note-number">สำหรับหมาแก่ค้าบ</div>
+          <div class="note-title">กดเปิดเพื่อเติมพลังงาน</div>
+          <div class="note-hint">↗</div>
+        </button>
+      </div>
+
+      <button class="back-button" id="backButton">
+        ← BACK TO THE RECORD
+      </button>
+
+      <div class="footer">♡</div>
+    </div>
+  </section>
+
+
+  <!-- POPUP: MESSAGE -->
+  <div class="popup" id="notePopup">
+    <div class="popup-content">
+      <div class="popup-star">✧ ♡ ✧</div>
+      <h2 id="popupTitle">A little reminder</h2>
+      <p class="popup-message" id="popupMessage"></p>
+      <button class="close-button" id="closePopup">CLOSE</button>
+    </div>
+  </div>
+
+
+  <script>
+    // =========================================
+    // แก้ไขข้อความในการ์ดได้จากตรงนี้
+    // =========================================
+
+    const cardMessage = {
+      title: "ข้อความส่งมาจีบหมาแก่ ฉบับเด็กวิศวะค้าบ ♡",
+      message: `เหนื่อยก็มาขอกอดๆได้นร้า ยืนรอเลย เป็นกำลังใจให้ค้าบ สองนิ้วสู้ตาย ฮึบบบ`
+    };
+
+
+    // =========================================
+    // ข้อความให้กำลังใจประจำวัน
+    // เปลี่ยนข้อความได้ตามต้องการ
+    // =========================================
+
+    const dailyMessages = [
+      "Have a nice day krub",
+
+    ];
+
+
+    // =========================================
+    // ELEMENTS
+    // =========================================
+
+    const page1 = document.getElementById("page1");
+    const page2 = document.getElementById("page2");
+
+    const playButton = document.getElementById("playButton");
+    const record = document.getElementById("record");
+    const tonearm = document.getElementById("tonearm");
+    const playerCaption = document.getElementById("playerCaption");
+
+    const backgroundMusic = document.getElementById("backgroundMusic");
+
+    const notePopup = document.getElementById("notePopup");
+    const openNote = document.getElementById("openNote");
+    const closePopup = document.getElementById("closePopup");
+
+    let isPlaying = false;
+    let isTransitioning = false;
+
+
+    // =========================================
+    // DAILY MESSAGE
+    // เลือกข้อความตามวันที่
+    // =========================================
+
+    function showDailyMessage() {
+      const now = new Date();
+
+      const dateText = now.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+
+      document.getElementById("todayDate").textContent = dateText;
+
+      const dayIndex = Math.floor(
+        new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+        / 86400000
+      ) % dailyMessages.length;
+
+      document.getElementById("dailyMessage").textContent =
+        dailyMessages[dayIndex];
+    }
+
+    showDailyMessage();
+
+
+    // =========================================
+    // PAGE TRANSITION
+    // =========================================
+
+    function goToPage(fromPage, toPage) {
+      if (isTransitioning) return;
+
+      isTransitioning = true;
+
+      fromPage.classList.remove("active");
+      fromPage.classList.add("leaving");
+
+      setTimeout(() => {
+        fromPage.classList.remove("leaving");
+        toPage.classList.add("active");
+
+        isTransitioning = false;
+      }, 700);
+    }
+
+
+    // =========================================
+    // PLAY MUSIC + SPIN RECORD
+    // =========================================
+
+    playButton.addEventListener("click", async () => {
+      if (isPlaying || isTransitioning) return;
+
+      isPlaying = true;
+      playButton.disabled = true;
+      playButton.textContent = "♪";
+      playerCaption.textContent = "NOW PLAYING FOR YOU";
+
+      // เริ่มเล่นเพลงเมื่อผู้ใช้กดปุ่ม
+      try {
+        await backgroundMusic.play();
+      } catch (error) {
+        playerCaption.textContent = "MUSIC COULD NOT PLAY";
+        playButton.disabled = false;
+        playButton.textContent = "PLAY";
+        isPlaying = false;
+        return;
+      }
+
+      // เริ่มหมุนแผ่นเสียงและขยับแขนเครื่องเล่น
+      record.classList.add("spinning");
+      tonearm.classList.add("playing");
+
+      // รอให้แผ่นเสียงเริ่มหมุนก่อนเปลี่ยนหน้า
+      setTimeout(() => {
+        goToPage(page1, page2);
+      }, 1800);
+    });
+
+
+    // =========================================
+    // OPEN NOTE POPUP
+    // =========================================
+
+    openNote.addEventListener("click", () => {
+      document.getElementById("popupTitle").textContent =
+        cardMessage.title;
+
+      document.getElementById("popupMessage").textContent =
+        cardMessage.message;
+
+      notePopup.classList.add("show");
+    });
+
+
+    // =========================================
+    // CLOSE POPUP
+    // =========================================
+
+    function closeNotePopup() {
+      notePopup.classList.remove("show");
+    }
+
+    closePopup.addEventListener("click", closeNotePopup);
+
+    notePopup.addEventListener("click", (event) => {
+      if (event.target === notePopup) {
+        closeNotePopup();
+      }
+    });
+
+
+    // =========================================
+    // BACK TO PAGE 1
+    // เพลงจะเล่นต่อเนื่อง ไม่หยุด
+    // =========================================
+
+    document.getElementById("backButton").addEventListener("click", () => {
+      closeNotePopup();
+      goToPage(page2, page1);
+    });
+
+
+    // ปิด popup ด้วยปุ่ม Escape
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeNotePopup();
+      }
+    });
+  </script>
+
+</body>
+</html>
